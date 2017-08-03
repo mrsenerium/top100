@@ -13,7 +13,6 @@
         <div class="list-group">
             @foreach($candidates as $candidate)
                 <a href="{{route('judging::round1.rate', ['candidateid' => $candidate->id])}}" class="list-group-item">
-                    
                     Applicant {{$candidate->id}}
                     @if($candidate->round1Scores->findBySecondary(Auth::user()->id))
                         @if($candidate->round1Scores->findBySecondary(Auth::user()->id)->hasScores())

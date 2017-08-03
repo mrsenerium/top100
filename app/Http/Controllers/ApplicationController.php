@@ -115,7 +115,7 @@ class ApplicationController extends Controller
         //if the candidate has no application, show 404 page
         if(!$candidate->application)
             abort(404, 'Candidate application not found.');
-
+            
         echo var_dump(get_defined_vars());
         return view('application.view', ['candidate' => $candidate]);
     }
