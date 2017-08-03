@@ -1,0 +1,151 @@
+body { padding-top: 70px; }
+
+footer {
+    margin-top: 50px;
+}
+
+// .navbar-default {
+//     .navbar-nav {
+//         &>.open {
+//             &>a,
+//             &>a:hover {
+//                 background-color: @brand-info;
+//             }
+//         }
+//     }
+// }
+
+.clear-both {
+    clear: both;
+}
+
+label {
+  &.required::after {
+    content: " * ";
+    font-size: 18px;
+    color: @brand-danger;
+  }
+}
+
+.radio {
+  margin-top: 0;
+  label {
+    margin-right: 15px;
+  }
+}
+
+.help-block {
+  font-size: 14px;
+  font-style: italic;
+}
+
+/*
+ *  ckeditor field warnings
+ */
+.cke_chrome {
+    /* needed a more specific selector to override reset from ckeditor skin */
+    &.cke {
+        border: 2px solid @input-border;
+    }
+  .has-success & {
+    border-color: @brand-success;
+  }
+  .has-warning & {
+    border-color: @brand-warning;
+  }
+  .has-error & {
+    border-color: @brand-danger;
+  }
+}
+
+legend {
+  border-color: @gray-lighter;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+
+.alert-success,
+.alert-warning,
+.alert-danger {
+    a {
+        text-decoration: underline;
+        color: #fff;
+    }
+}
+
+ol.list-results {
+    .list-group-item {
+        list-style: decimal inside;
+        display: list-item;
+    }
+}
+
+ul#selected {
+    min-height: 100px;
+    counter-reset: rank -1; //need to start counter at -1 to skip heading li
+    li {
+        counter-increment: rank;
+        i.handle::after {
+            content: counter(rank)".";
+            margin-left: 10px;
+            font-family: @font-family-sans-serif;
+            color: @gray-darker;
+        }
+    }
+}
+
+.handle {
+    cursor: grab;
+    margin-right: 10px;
+    color: @gray;
+}
+
+.unread {
+    font-weight: bold;
+    &:after {
+        content: " * ";
+        color: @gray;
+    }
+}
+
+.scale-container {
+    margin-top: -21px;
+}
+
+@media(max-width: @screen-xs-max) {
+    fieldset {
+        .form-group.pull-right {
+            float: none !important;
+        }
+    }
+}
+
+@media(min-width: @screen-sm-min) {
+    .form-inline {
+        .form-group {
+            margin-right: 15px;
+        }
+        .control-label {
+            margin-bottom: 5px;
+        }
+    }
+}
