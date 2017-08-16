@@ -81,7 +81,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::group(['as' => 'application::'], function () {
       Route::get('application/edit', ['as' => 'form', 'uses' => 'ApplicationController@getForm']);
       Route::post('application/edit', ['as' => 'form.update', 'uses' => 'ApplicationController@storeForm']);
-      Route::get('application/{id}/edit', ['as' => 'view', 'uses' => 'ApplicationController@viewApplication']);
+      Route::get('application/{id?}', ['as' => 'view', 'uses' => 'ApplicationController@viewApplication']);
       Route::get('application/adminEdit/{id?}', ['as' => 'adminEdit', 'uses' => 'ApplicationController@adminEditApplication']);
     });
 

@@ -113,11 +113,3 @@
         </form>
     </div>
 @endsection
-
-@push('scripts')
-    <script src="//cdn.ckeditor.com/4.5.6/basic/ckeditor.js"></script>
-    <script>
-        window.ORG_MAX = {{AppSettings::getOrganizationMax()}};
-    </script>
-    <script src="{{asset('js/custom/candidate-form.js')}}"></script>
-@endpush

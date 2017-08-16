@@ -54,7 +54,7 @@ class ScoringService
         if($orderByScore)
             $candidates->orderBy('round1_score', 'desc');
         else
-            $candidates->orderByName();
+            $candidates->inRandomOrder();//->orderByName();  To Fix "Readers Fatiuge"
 
         if($paginate === true)
             return $candidates->paginate(10);

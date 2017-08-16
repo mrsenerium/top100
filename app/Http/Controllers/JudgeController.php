@@ -82,13 +82,17 @@ class JudgeController extends Controller
         $selected_ids = Round2Score::where('judge_id', auth()->user()->id)->orderBy('rank_position', 'desc')->get()->pluck('candidate_id');
 
         $selected_candidates = array();
+        //shuffle($selected_candidates);
         if($selected_ids->count() > 0) {
             //force query to order by WHERE IN order
             $placeholders = implode(',',array_fill(0, count($selected_ids), '?')); // create placeholder string, ie: '?,?,?...'
             $selected_candidates = Candidate::whereIn('id', $selected_ids)
+                                            //->inRandomOrder()
                                             ->orderByRaw("FIELD(id,{$placeholders})", $selected_ids)
                                             ->get();
         }
+        //shuffle($selected_candidates->items);
+        //var_dump($selected_candidates);
         return view('judging.round2', ['available' => collect($top100), 'selected' => $selected_candidates]);
     }
 

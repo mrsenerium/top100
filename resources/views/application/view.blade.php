@@ -7,11 +7,11 @@
 @section('content')
     <div class="col-md-12">
         @include('partials/status')
-        @can('apply')
+
             <div class="col-md-12">
-                <a href="{{route('application::form')}}" class="btn btn-info pull-right">Edit Application</a>
+                <a href="{{route('application::adminEdit', ['id' => $candidate->id])}}" class="btn btn-info pull-right">Edit Application</a>
             </div>
-        @endcan
+
         <div class="col-md-4 col-md-push-8">
             @include('partials.candidate')
         </div>
@@ -29,9 +29,6 @@
             @endif
             <div class="tab-content">
                 <div id="candidate-view" role="tabpanel" class="tab-pane active">
-                    @if(true)//$this->user->isSuperAdmin())
-                      <a href="{{route('application::adminEdit', ['id' => $candidate->id])}}" class="btn btn-info pull-right">Edit Candidate</a>
-                    @endif
                     <fieldset>
                         <legend>Academics</legend>
                         <div class="form-group">

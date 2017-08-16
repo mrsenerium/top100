@@ -12,6 +12,7 @@ use App\CandidateResponse;
 use App\Candidate;
 use App\Http\Requests\CandidateApplicationRequest;
 use App\User;
+use config\Auth;
 
 class ApplicationController extends Controller
 {
@@ -102,23 +103,34 @@ class ApplicationController extends Controller
         return Redirect::route('application::form')->with('status', ['type' => 'success', 'message' => 'Application saved.']);
     }
 
-
     public function viewApplication($id = null)
     {
         if(isset($id))
             $candidate = Candidate::findOrFail($id);
         else
             $candidate = request()->user()->candidate;
-
         $this->authorize('view-application', $candidate);
-
         //if the candidate has no application, show 404 page
         if(!$candidate->application)
             abort(404, 'Candidate application not found.');
-            
-        echo var_dump(get_defined_vars());
-        return view('application.view', ['candidate' => $candidate]);
+        return view('application.view', ['candidate' => $candidate, 'id' => $id]);
     }
+
+    /*public function viewApplication($id = null)
+    {
+        die("Line 109");
+        if(isset($id))
+            $candidate = Candidate::findOrFail($id);
+        else
+            $candidate = request()->user()->candidate;
+        $this->authorize('view-application', $candidate);
+        //if the candidate has no application, show 404 page
+        if(!$candidate->application)
+            abort(404, 'Candidate application not found.');
+
+        //echo var_dump(get_defined_vars());
+        return view('application.view', ['candidate' => $candidate]);
+    }*/
 
 
     public function adminEditApplication($id = null)
