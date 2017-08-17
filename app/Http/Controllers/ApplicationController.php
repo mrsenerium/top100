@@ -172,23 +172,6 @@ class ApplicationController extends Controller
         return view('application.view', ['candidate' => $candidate, 'id' => $id]);
     }
 
-    /*public function viewApplication($id = null)
-    {
-        die("Line 109");
-        if(isset($id))
-            $candidate = Candidate::findOrFail($id);
-        else
-            $candidate = request()->user()->candidate;
-        $this->authorize('view-application', $candidate);
-        //if the candidate has no application, show 404 page
-        if(!$candidate->application)
-            abort(404, 'Candidate application not found.');
-
-        //echo var_dump(get_defined_vars());
-        return view('application.view', ['candidate' => $candidate]);
-    }*/
-
-
     public function adminEditApplication($id = null)
     {
         if(isset($id))
@@ -196,7 +179,7 @@ class ApplicationController extends Controller
         else
             $candidate = request()->user()->candidate;
 
-        $this->authorize('view-application', $candidate);
+        $this->authorize('edit-users');
 
         //if the candidate has no application, show 404 page
         if(!$candidate->application)

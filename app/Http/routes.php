@@ -118,6 +118,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('recommend/{id}', ['as' => 'recommend.save', 'uses' => 'RecommendationController@storeForm']);
         Route::get('recommendations/request', ['as' => 'request', 'uses' => 'RecommendationController@request']);
         Route::post('recommendations/request', ['as' => 'request', 'uses' => 'RecommendationController@emailRequest']);
+        Route::get('recommendation/adminEdit/{id}/{cid}', ['as' => 'adminEdit', 'uses' => 'RecommendationController@adminEdit']);
+        Route::post('recommendation/adminEdit/{id}/{cid}', ['as' => 'adminsave', 'uses' => 'RecommendationController@adminStoreForm']);
     });
 
     Route::group(['as' => 'guests::'], function () {

@@ -66,6 +66,9 @@
                                 </div>
                                 <div class="panel-body">
                                     {!! $recommendation->message !!}
+                                    @hasrole('admin')
+                                      <a href="{{route('recommendations::adminEdit', ['id' => $recommendation->id, 'cid' => $candidate->id])}}" class="btn btn-info pull-right">Edit Application</a>
+                                    @endhasrole
                                 </div>
                             </div>
                         @endforeach

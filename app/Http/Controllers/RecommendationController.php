@@ -154,4 +154,40 @@ class RecommendationController extends Controller
             'message' => 'Your recommendation request was sent to '.$request->recommender_name.' at '.$request->recommender_email.'.'
         ]);
     }
+
+    public function adminEdit($id, $cid)
+    {
+        //authorize
+        //TODO: prevent candidate from recommending self
+        $this->authorize('edit-users');
+        $candidate = Candidate::findOrFail($cid);
+        $recommendation = Recommendation::findOrFail($id);
+        return view('recommendations.editForm', ['recommendation' => $recommendation, 'candidate' => $candidate]);
+    }
+
+    public function adminStoreForm(Request $request, $id, $cid)
+    {
+        //authorize
+        //TODO: prevent candidate from recommending self
+        $this->authorize('edit-users');
+
+        $this->validate($request, [
+            'recommender_name'      => 'required|string|max:255',
+            'recommender_email'     => 'required|email|max:255',
+            'recommendation_body'   => 'required|string|max:20000'
+        ]);
+
+        $candidate = Candidate::findOrFail($cid);
+        $recommendation = Recommendation::findOrFail($id);
+        $recommendation->name = $request->recommender_name;
+        $recommendation->email = $request->recommender_email;
+        $recommendation->message = $request->recommendation_body;
+
+        $candidate->recommendations()->save($recommendation);
+
+        return Redirect::route('application::view', ['id' => $candidate->id])->with('status', [
+            'type' => 'success',
+            'message' => 'The recommendation for '.$candidate->fullname.' was saved.'
+        ]);
+    }
 }
