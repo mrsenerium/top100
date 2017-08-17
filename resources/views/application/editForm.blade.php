@@ -17,10 +17,11 @@
                 </ul>
             </div>
         @endif
-        <form method="post" action="{{route('application::form.update')}}">
+        <form method="post" action="{{route('application::form.updateForm')}}">
             {!! csrf_field() !!}
             <div class="col-md-4 col-md-push-8">
                 @include('partials.candidate')
+                <input type="hidden" name="id" value="{{$candidate->id}}">
             </div>
             <div class="col-md-8 col-md-pull-4">
                 <fieldset>
@@ -99,16 +100,8 @@
                 </fieldset>
             </div>
             <div class="col-md-12">
-                <div class="checkbox alert alert-warning">
-                    <label>
-                        <input type="checkbox" name="confirm" id="confirm" />
-                        I have completed my application and I understand that after clicking the 'FINISH' button, I will no longer be able to make changes to my application. I also understand that by submitting this information I consent to release this information for the purposes of nomination for the Outstanding Student Recognition Program.
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <button type="submit" name="save_app" class="btn btn-success">Save for later</button>
-                <button type="submit" name="preview_app" class="btn btn-info">Preview</button>
+                <button type="submit" name="save_app" class="btn btn-success">Save</button>
+                <button type="submit" name="cancel_save" class="btn btn-danger">Cancel</button>
             </div>
         </form>
     </div>

@@ -7,11 +7,11 @@
 @section('content')
     <div class="col-md-12">
         @include('partials/status')
-
+            @hasrole('admin')
             <div class="col-md-12">
                 <a href="{{route('application::adminEdit', ['id' => $candidate->id])}}" class="btn btn-info pull-right">Edit Application</a>
             </div>
-
+            @endhasrole
         <div class="col-md-4 col-md-push-8">
             @include('partials.candidate')
         </div>

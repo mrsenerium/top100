@@ -103,6 +103,62 @@ class ApplicationController extends Controller
         return Redirect::route('application::form')->with('status', ['type' => 'success', 'message' => 'Application saved.']);
     }
 
+    public function updateForm(CandidateApplicationRequest $request)
+    {
+        $candidate = Candidate::findOrFail($request->id);
+        $this->authorize('create-candidates');
+
+        $candidateApp = CandidateResponse::firstOrNew(['id' => $candidate->id]);
+        $candidateApp->additional_majors = $request->additional_majors;
+        $candidateApp->academic_honors = $request->academic_honors;
+        $candidateApp->reflection = $request->reflection;
+
+        //save services and activities
+        CandidateOrganization::where('candidate_id', $candidate->id)->delete();
+        $count = 0;
+        foreach ($request->service as $service) {
+            if(!empty($service['name'])) {
+                $candidate->organizations()->create([
+                    'candidate_id'          => $candidate->id,
+                    'organization_id'       => $count,
+                    'name'                  => $service['name'],
+                    'description'           => $service['description'],
+                    'position_held'         => $service['position_held'],
+                    'involvement_length'    => $service['involvement'],
+                    'involvement_duration'  => $service['duration'],
+                    'organization_type'     => 'service'
+                ]);
+                $count++;
+            }
+        }
+        foreach ($request->activity as $activity) {
+            if(!empty($activity['name'])) {
+                $candidate->organizations()->create([
+                    'candidate_id'          => $candidate->id,
+                    'organization_id'       => $count,
+                    'name'                  => $activity['name'],
+                    'description'           => $activity['description'],
+                    'position_held'         => $activity['position_held'],
+                    'involvement_length'    => $activity['involvement'],
+                    'involvement_duration'  => $activity['duration'],
+                    'organization_type'     => 'activity'
+                ]);
+                $count++;
+            }
+        }
+
+        //if user pressed cancel, redirect to all
+        if(isset($request->cancel_save))
+        {
+            return Redirect::route('candidates::index')->with('status', ['type' => 'success', 'message' => 'Save Cancelled.']);
+        }
+        else
+        {
+          $candidateApp->save();
+        }
+        return Redirect::route('application::view', ['id'=>$candidate->id])->with('status', ['type' => 'success', 'message' => 'Application saved.']);
+    }
+
     public function viewApplication($id = null)
     {
         if(isset($id))

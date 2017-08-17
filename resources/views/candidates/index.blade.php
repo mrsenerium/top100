@@ -67,6 +67,7 @@
                         <th>Last Name</th>
                         <th>First Name</th>
                         <th class="hidden-xs hidden-sm">Email</th>
+                        <th>ID</th>
                         <th>Nominated</th>
                         <th>Disqualified</th>
                         <th>Submitted</th>
@@ -90,6 +91,7 @@
                             <td>{{$candidate->user->lastname}}</td>
                             <td>{{$candidate->user->firstname}}</td>
                             <td class="hidden-xs hidden-sm"><a href="mailto:{{$candidate->user->email}}">{{$candidate->user->email}}</a></td>
+                            <td>{{$candidate->id}}</td>
                             <td>@include('partials.boolean', ['bool' => $candidate->nominated])</td>
                             <td>@include('partials.boolean', ['bool' => $candidate->disqualified])</td>
                             <td>@include('partials.boolean', ['bool' => $candidate->application && $candidate->application->submitted])</td>
