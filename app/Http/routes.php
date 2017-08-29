@@ -102,7 +102,7 @@ Route::group(['middleware' => 'web'], function () {
       Route::post('judging/{candidateid}/round-1', ['as' => 'round1.rate.save', 'uses' => 'JudgeController@storeRateForm']);
       Route::get('judging/round2', ['as' => 'round2', 'uses' => 'JudgeController@getRound2']);
       Route::get('judging/round-2/{candidateid}', ['as' => 'round2.rate', 'uses' => 'JudgeController@getRound2RateForm']);
-      Route::post('judging/round-2', ['as' => 'round2.save', 'uses' => 'JudgeController@storeRound2']);
+      Route::post('judging/round-2/{candidateid}', ['as' => 'round2.rate.save', 'uses' => 'JudgeController@storeRound2']);
       Route::post('judging/assign', ['as' => 'assign', 'uses' => 'JudgeController@assign']);
     });
 

@@ -79,7 +79,7 @@ class JudgeController extends Controller
       $this->authorize('round2-judging');
 
       //need to use join query to order by candidate's name
-      $candidates = Candidate::submitted()->forJudge(auth()->user()->id)->orderByName()->get();
+      $candidates = Candidate::submitted()->forJudge(auth()->user()->id)->inRandomOrder()->get();
 
       return view('judging.round2', ['candidates' => $candidates]);
     }
@@ -91,26 +91,36 @@ class JudgeController extends Controller
 
         $candidate = Candidate::findOrFail($candidateid);
 
-        $score = Round1Score::firstOrCreate(['candidate_id' => $candidateid, 'judge_id' => auth()->user()->id]);
+        $score = Round2Score::firstOrCreate(['candidate_id' => $candidateid, 'judge_id' => auth()->user()->id]);
         return view('judging.rate2', ['candidate' => $candidate, 'score' => $score]);
     }
 
-    public function storeRound2(Request $request)
+    public function storeRound2(Request $request, $candidateid)
     {
         //authorize
         $this->authorize('round2-judging');
 
-        $judge_id = auth()->user()->id;
-        Round2Score::where('judge_id', $judge_id)->delete();
-        $selected = $request->input('selected');
-        foreach ($selected as $index => $candidate_id) {
-            Round2Score::create([
-                'candidate_id'  => $candidate_id,
-                'judge_id'      => $judge_id,
-                'rank_position' => 25 - $index
-            ]);
-        }
-        return response()->json(['status' => 'success', 'message' => 'Ranking saved successfully.']);
+        $this->validate($request, [
+            'academics_score'       => 'required|integer',
+            'reflection_score'      => 'required|integer',
+            'activities_score'      => 'required|integer',
+            'services_score'        => 'required|integer',
+            'recommendations_score' => 'required|integer',
+        ]);
+
+        $score = Round2Score::firstOrCreate(['candidate_id' => $candidateid, 'judge_id' => auth()->user()->id]);
+
+        $score->academics_score = $request->academics_score;
+        $score->reflection_score = $request->reflection_score;
+        $score->activities_score = $request->activities_score;
+        $score->services_score = $request->services_score;
+        $score->recommendations_score = $request->recommendations_score;
+        $score->save();
+        echo(var_dump($score->candidate->user));
+        return Redirect::route('judging::round2')->with('status', [
+            'type' => 'success',
+            'message' => 'Applicant scores saved' //.$score->candidate->user->firstname.' '.$score->candidate->user->lastname.'.'
+        ]);
     }
 
     public function assign(Request $request, Scoring $scoring)

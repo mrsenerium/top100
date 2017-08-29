@@ -9,7 +9,7 @@
         <div class="col-md-4 col-md-push-8">
             @include('partials.candidate')
         </div>
-        <form action="{{route('judging::round1.rate.save', ['candidateid' => $candidate->id])}}" method="post" class="col-md-8 col-md-pull-4">
+        <form action="{{route('judging::round2.rate.save', ['candidateid' => $candidate->id])}}" method="post" class="col-md-8 col-md-pull-4">
             {!! csrf_field() !!}
 
             <p>Provide a score for each section where 0 is the worst and 10 is the best. You must provide a score for each section before saving.</p>
@@ -62,6 +62,31 @@
                     ])
                 </div>
                 @each('application.organization.view', $candidate->organizations()->where('organization_type', 'service')->get(), 'organization', 'application.organization.empty')
+            </fieldset>
+            <fieldset>
+                <legend>Recommendations</legend>
+                <div class="form-group pull-right scale-container">
+                    @include('judging.partials.scale', [
+                        'field_name' => 'recommendations_score',
+                        'score' => $score->recommendations_score
+                    ])
+                </div>
+                <div id="recommendation-view" role="tabpanel" class="tab-pane">
+                    <p></p>
+                    @foreach($candidate->recommendations as $recommendation)
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">{{$recommendation->name}}</h3>
+                            </div>
+                            <div class="panel-body">
+                                {!! $recommendation->message !!}
+                                @hasrole('admin')
+                                  <a href="{{route('recommendations::adminEdit', ['id' => $recommendation->id, 'cid' => $candidate->id])}}" class="btn btn-info pull-right">Edit Recommendation</a>
+                                @endhasrole
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </fieldset>
 
             <div class="form-buttons well well-sm">
