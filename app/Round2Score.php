@@ -22,16 +22,34 @@ class Round2Score extends CompositeBaseModel
     * @var array
     */
     protected $fillable = [
-      'candidate_id', 'judge_id', 'rank_position'
+      'candidate_id', 'judge_id', 'academics_score', 'reflection_score', 'services_score', 'activities_score'
     ];
+
+    public function scopeRequired($query, $judge_id)
+    {
+        return $query->where('judge_id', $judge_id)->whereHas('candidate', function ($subquery) {
+            $subquery->where('disqualified', false);
+        });
+    }
 
     public function judge()
     {
-      return $this->belongsTo('App\User', 'judge_id');
+        return $this->belongsTo('App\User', 'judge_id');
     }
 
     public function candidate()
     {
-      return $this->belongsTo('App\Candidate', 'candidate_id');
+        return $this->belongsTo('App\Candidate', 'candidate_id');
+    }
+
+    public function hasScores()
+    {
+        return isset($this->academics_score) && isset($this->reflection_score) && isset($this->services_score) && isset($this->activities_score);
+    }
+
+    public function total()
+    {
+        if($this->hasScores())
+            return $this->academics_score + $this->reflection_score + $this->services_score + $this->activities_score;
     }
 }

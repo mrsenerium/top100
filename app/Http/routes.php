@@ -84,6 +84,7 @@ Route::group(['middleware' => 'web'], function () {
       Route::post('application/edit', ['as' => 'form.updateForm', 'uses' => 'ApplicationController@updateForm']);
       Route::get('application/{id?}', ['as' => 'view', 'uses' => 'ApplicationController@viewApplication']);
       Route::get('application/adminEdit/{id?}', ['as' => 'adminEdit', 'uses' => 'ApplicationController@adminEditApplication']);
+      Route::get('application/round2/{id?}', ['as' => 'round2', 'uses' => 'ApplicationController@viewApplication']);
     });
 
     Route::group(['as' => 'settings::'], function () {
@@ -99,7 +100,8 @@ Route::group(['middleware' => 'web'], function () {
       Route::get('judging/round-1', ['as' => 'round1', 'uses' => 'JudgeController@getRound1']);
       Route::get('judging/{candidateid}/round-1', ['as' => 'round1.rate', 'uses' => 'JudgeController@getRateForm']);
       Route::post('judging/{candidateid}/round-1', ['as' => 'round1.rate.save', 'uses' => 'JudgeController@storeRateForm']);
-      Route::get('judging/round-2', ['as' => 'round2', 'uses' => 'JudgeController@getRound2']);
+      Route::get('judging/round2', ['as' => 'round2', 'uses' => 'JudgeController@getRound2']);
+      Route::get('judging/round-2/{candidateid}', ['as' => 'round2.rate', 'uses' => 'JudgeController@getRound2RateForm']);
       Route::post('judging/round-2', ['as' => 'round2.save', 'uses' => 'JudgeController@storeRound2']);
       Route::post('judging/assign', ['as' => 'assign', 'uses' => 'JudgeController@assign']);
     });

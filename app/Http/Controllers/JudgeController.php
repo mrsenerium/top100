@@ -73,27 +73,26 @@ class JudgeController extends Controller
         ]);
     }
 
-    public function getRound2(Scoring $scoring)
+    public function getRound2()
+    {
+      //authorize
+      $this->authorize('round2-judging');
+
+      //need to use join query to order by candidate's name
+      $candidates = Candidate::submitted()->forJudge(auth()->user()->id)->orderByName()->get();
+
+      return view('judging.round2', ['candidates' => $candidates]);
+    }
+
+    public function getRound2RateForm($candidateid = null)
     {
         //authorize
         $this->authorize('round2-judging');
 
-        $top100 = $scoring->getTop100(false);
-        $selected_ids = Round2Score::where('judge_id', auth()->user()->id)->orderBy('rank_position', 'desc')->get()->pluck('candidate_id');
+        $candidate = Candidate::findOrFail($candidateid);
 
-        $selected_candidates = array();
-        //shuffle($selected_candidates);
-        if($selected_ids->count() > 0) {
-            //force query to order by WHERE IN order
-            $placeholders = implode(',',array_fill(0, count($selected_ids), '?')); // create placeholder string, ie: '?,?,?...'
-            $selected_candidates = Candidate::whereIn('id', $selected_ids)
-                                            //->inRandomOrder()
-                                            ->orderByRaw("FIELD(id,{$placeholders})", $selected_ids)
-                                            ->get();
-        }
-        //shuffle($selected_candidates->items);
-        //var_dump($selected_candidates);
-        return view('judging.round2', ['available' => collect($top100), 'selected' => $selected_candidates]);
+        $score = Round1Score::firstOrCreate(['candidate_id' => $candidateid, 'judge_id' => auth()->user()->id]);
+        return view('judging.rate2', ['candidate' => $candidate, 'score' => $score]);
     }
 
     public function storeRound2(Request $request)
