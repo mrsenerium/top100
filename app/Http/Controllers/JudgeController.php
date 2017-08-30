@@ -66,7 +66,6 @@ class JudgeController extends Controller
         $score->activities_score = $request->activities_score;
         $score->services_score = $request->services_score;
         $score->save();
-        echo(var_dump($score->candidate->user));
         return Redirect::route('judging::round1')->with('status', [
             'type' => 'success',
             'message' => 'Applicant scores saved' //.$score->candidate->user->firstname.' '.$score->candidate->user->lastname.'.'
@@ -116,7 +115,6 @@ class JudgeController extends Controller
         $score->services_score = $request->services_score;
         $score->recommendations_score = $request->recommendations_score;
         $score->save();
-        echo(var_dump($score->candidate->user));
         return Redirect::route('judging::round2')->with('status', [
             'type' => 'success',
             'message' => 'Applicant scores saved' //.$score->candidate->user->firstname.' '.$score->candidate->user->lastname.'.'

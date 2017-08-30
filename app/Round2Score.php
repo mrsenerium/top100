@@ -22,7 +22,7 @@ class Round2Score extends CompositeBaseModel
     * @var array
     */
     protected $fillable = [
-      'candidate_id', 'judge_id', 'academics_score', 'reflection_score', 'services_score', 'activities_score'
+      'candidate_id', 'judge_id', 'academics_score', 'reflection_score', 'services_score', 'activities_score', 'recommendations_score'
     ];
 
     public function scopeRequired($query, $judge_id)
@@ -50,6 +50,6 @@ class Round2Score extends CompositeBaseModel
     public function total()
     {
         if($this->hasScores())
-            return $this->academics_score + $this->reflection_score + $this->services_score + $this->activities_score;
+            return $this->academics_score + $this->reflection_score + $this->services_score + $this->activities_score + $this->recommendations_score;
     }
 }

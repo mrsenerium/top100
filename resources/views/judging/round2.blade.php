@@ -18,7 +18,7 @@
                         @if($candidate->round2Scores->findBySecondary(Auth::user()->id)->hasScores())
                             <i class="fa fa-check text-success" title="Candidate has been scored."></i>
                             <span class="badge" title="Your score for {{$candidate->fullname}}">
-                                {{$candidate->round1Scores->findBySecondary(Auth::user()->id)->total()}}
+                                {{$candidate->round2Scores->findBySecondary(Auth::user()->id)->total()}}
                             </span>
                         @endif
                     @endif

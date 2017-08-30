@@ -81,7 +81,7 @@ class ApplicationController extends Controller
 
         //if the confirmation is checked, user is submitting final application
         if($candidateApp->submitted === true) {
-            $mail = ApplicationEmail::find(ApplicationEmail::ApplicationSubmitted);
+          $mail = ApplicationEmail::find(ApplicationEmail::ApplicationSubmitted);
             \Mail::queue('emails.applications.confirmation', [
                 'candidate'     => $candidate,
                 'body'          => $mail->body,
@@ -92,7 +92,6 @@ class ApplicationController extends Controller
                 $message->to($candidate->user->email);
                 $message->subject($mail->subject);
             });
-
             return Redirect::route('application::view')->with('status', ['type' => 'success', 'message' => 'Application submitted.']);
         }
 

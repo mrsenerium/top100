@@ -23,7 +23,7 @@
                   <div class="help-block text-danger">
                     {{$errors->first('search')}}
                   </div>
-                @endif                
+                @endif
             </form>
         </div>
     </div>
