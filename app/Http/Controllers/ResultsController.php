@@ -31,7 +31,6 @@ class ResultsController extends Controller
     public function showRound2(Scoring $scoring)
     {
         $this->authorize('access-admin');
-
         return view('results.round2', ['results' => $scoring->getRound2()]);
     }
 

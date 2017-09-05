@@ -100,9 +100,23 @@ class ScoringService
         $this->calculateScores(2);
     }
 
-    public function getRound2($orderByScore = true)
+    public function getRound2($orderByScore = true, $paginate = true)
     {
-        $genders = [
+      //get all top100 candidates
+      //$candidates = Candidate::top100();
+
+      $candidates = Round2Score::with('Judge')->first();
+
+      //order $candidates
+      if($orderByScore)
+          $candidates->orderBy('round2_score', 'desc');
+      else
+          $candidates->inRandomOrder();//->orderByName();  To Fix "Readers Fatiuge"
+
+      if($paginate === true)
+          return $candidates->paginate(10);
+      return $candidates->get();
+        /*$genders = [
             'Men' => 'M',
             'Women' => 'F'
         ];
@@ -140,7 +154,7 @@ class ScoringService
                 else
                     $candidateQuery = $candidateQuery->orderByName();
 
-                $candidates = $candidateQuery->get()
+                $candidates = $candidateQuery->all()
                     ->filter(function ($item, $key) {
                         return $item->round2_score > 0;
                     });
@@ -148,7 +162,8 @@ class ScoringService
                 $results[$key] = $candidates->take(10);
             }
         }
-        return $results;
+
+        return $results;*/
     }
 
     private function calculateScores($round = 1)
@@ -210,8 +225,8 @@ class ScoringService
 
     private function calculateRound2Score(Candidate $candidate)
     {
-        $scores = $candidate->round2Scores->reject(function ($value, $key) {
-            $required = 25;     //TODO: make setting
+        /*$scores = $candidate->round2Scores->reject(function ($value, $key) {
+            $required = 5;     //TODO: make setting
             $judged = Round2Score::where('judge_id', $value->judge_id)->count();
             return $required > $judged;
         });
@@ -219,7 +234,35 @@ class ScoringService
             return 0;
         $candidate->update([
             'round2_score'  =>  $scores->pluck('rank_position')//->avg()
+        ]);*/
+        $scores = $candidate->round2Scores->reject(function ($value, $key) {
+            // //get required, non-disqualified candidate total for judge
+            // $required = Round1Score::required($value->judge_id)->count();
+            // //get total number of completed scores
+            // $judged = Round1Score::required($value->judge_id)->where(function ($query) {
+            //     $query->whereNotNull('reflection_score')
+            //         ->orWhereNotNull('academics_score')
+            //         ->orWhereNotNull('activities_score')
+            //         ->orWhereNotNull('services_score');
+            // })->count();
+            $unjudged = Round2Score::required($value->judge_id)->where(function ($query) {
+                $query->whereNull('reflection_score')
+                    ->orWhereNull('academics_score')
+                    ->orWhereNull('activities_score')
+                    ->orWhereNull('services_score')
+                    ->orWhereNull('recommendations_score');
+            })->count();
+            return $unjudged > 0;
+            // //if more required than judged, remove score
+            // return $required > $judged;
+        });
+        $totals = $scores->map(function($item, $key) {
+            return $item->academics_score + $item->reflection_score + $item->services_score + $item->activities_score + $item->recommendations_score;
+        });
+        $candidate->update([
+            'round2_score'  => $totals//->avg()
         ]);
+        return $candidate->round2_score;
     }
 
 }

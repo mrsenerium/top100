@@ -72,15 +72,15 @@ class JudgeController extends Controller
         ]);
     }
 
-    public function getRound2()
+    public function getRound2(Scoring $scoring)
     {
       //authorize
       $this->authorize('round2-judging');
 
       //need to use join query to order by candidate's name
-      $candidates = Candidate::submitted()->forJudge(auth()->user()->id)->inRandomOrder()->get();
-
-      return view('judging.round2', ['candidates' => $candidates]);
+      //$candidates = Candidate::submitted()->forJudge(auth()->user()->id)->inRandomOrder()->get();
+      $top100 = $scoring->getTop100(false);
+      return view('judging.round2', ['candidates' => $top100]);
     }
 
     public function getRound2RateForm($candidateid = null)

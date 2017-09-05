@@ -171,7 +171,7 @@ class UserController extends Controller
 
         $round2Judges = User::judges(2)->orderBy('lastname')->orderBy('firstname')->get();
         $judgesMap = $round2Judges->map(function ($item) {
-            $scores = \App\Round2Score::where('judge_id', '=', $item->id)->where('rank_position', '>', 0);
+            $scores = \App\Round2Score::where('judge_id', '=', $item->id);
             return [
                 'user'          => $item,
                 'totalRequired' => 25,
