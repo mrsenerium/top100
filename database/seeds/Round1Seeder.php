@@ -11,7 +11,7 @@ class Round1Seeder extends Seeder
      */
     public function run()
     {
-        factory(App\User::class, 250)->create()->each(function ($user) {
+        factory(App\User::class, 400)->create()->each(function ($user) {
             $candidate = factory(App\Candidate::class)->make([
                     'nominated' => true,
                     'disqualified'  => false

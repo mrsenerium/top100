@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Round2Score extends CompositeBaseModel
 {
@@ -51,5 +52,10 @@ class Round2Score extends CompositeBaseModel
     {
         if($this->hasScores())
             return $this->academics_score + $this->reflection_score + $this->services_score + $this->activities_score + $this->recommendations_score;
+    }
+
+    public function scopeByJudge($query)
+    {
+      return $query->with('Judge')->orderBy('judge_id')->get();
     }
 }

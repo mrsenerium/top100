@@ -102,10 +102,19 @@ class ScoringService
 
     public function getRound2($orderByScore = true, $paginate = true)
     {
+      $candidates = Round2Score::ByJudge();
+      return $candidates;
+    }
+
+    public function getRound2Totals($orderByScore = true, $paginate = true)
+    {
       //get all top100 candidates
       //$candidates = Candidate::top100();
 
-      $candidates = Round2Score::with('Judge')->first();
+      //$candidates = Round2Score::with('Judge')->orderBy('candidate_id', 'asc')->get();
+
+      //order $candidates
+      $candidates = Candidate::top100();
 
       //order $candidates
       if($orderByScore)
@@ -116,54 +125,6 @@ class ScoringService
       if($paginate === true)
           return $candidates->paginate(10);
       return $candidates->get();
-        /*$genders = [
-            'Men' => 'M',
-            'Women' => 'F'
-        ];
-
-        $results = array();
-
-        if(!AppSettings::getSeparateGenders())
-        {
-            $candidateQuery = Candidate::submitted()->where([
-                ['top100', true],
-                ['round2_score', '>', 0]
-            ]);
-            if($orderByScore)
-                $candidateQuery = $candidateQuery->orderBy('round2_score', 'desc');
-            else
-                $candidateQuery = $candidateQuery->orderByName();
-
-            $candidates = $candidateQuery->get()
-                    ->filter(function ($item, $key) {
-                        return $item->round2_score > 0;
-                    });
-
-            $results['Students'] = $candidates->take(20);
-        }
-        else {
-            foreach ($genders as $key => $value) {
-                $candidateQuery = Candidate::submitted()->where([
-                    ['top100', true],
-                    ['round2_score', '>', 0],
-                    ['gender', $value]
-                ]);
-
-                if($orderByScore)
-                    $candidateQuery = $candidateQuery->orderBy('round2_score', 'desc');
-                else
-                    $candidateQuery = $candidateQuery->orderByName();
-
-                $candidates = $candidateQuery->all()
-                    ->filter(function ($item, $key) {
-                        return $item->round2_score > 0;
-                    });
-
-                $results[$key] = $candidates->take(10);
-            }
-        }
-
-        return $results;*/
     }
 
     private function calculateScores($round = 1)
@@ -225,16 +186,15 @@ class ScoringService
 
     private function calculateRound2Score(Candidate $candidate)
     {
-        /*$scores = $candidate->round2Scores->reject(function ($value, $key) {
-            $required = 5;     //TODO: make setting
+        $scores = $candidate->round2Scores->reject(function ($value, $key) {
+            $NumberInTop100 = count($this->getTop100());
+            $required = $NumberInTop100;     //TODO: make setting
             $judged = Round2Score::where('judge_id', $value->judge_id)->count();
+            //die(var_dump($NumberInTop100));
             return $required > $judged;
         });
         if(!$scores)
             return 0;
-        $candidate->update([
-            'round2_score'  =>  $scores->pluck('rank_position')//->avg()
-        ]);*/
         $scores = $candidate->round2Scores->reject(function ($value, $key) {
             // //get required, non-disqualified candidate total for judge
             // $required = Round1Score::required($value->judge_id)->count();
@@ -249,8 +209,8 @@ class ScoringService
                 $query->whereNull('reflection_score')
                     ->orWhereNull('academics_score')
                     ->orWhereNull('activities_score')
-                    ->orWhereNull('services_score')
-                    ->orWhereNull('recommendations_score');
+                    ->orWhereNull('services_score');
+                    //->orWhereNull('recommendations_score');
             })->count();
             return $unjudged > 0;
             // //if more required than judged, remove score
@@ -260,7 +220,7 @@ class ScoringService
             return $item->academics_score + $item->reflection_score + $item->services_score + $item->activities_score + $item->recommendations_score;
         });
         $candidate->update([
-            'round2_score'  => $totals//->avg()
+            'round2_score'  => $totals->sum()
         ]);
         return $candidate->round2_score;
     }

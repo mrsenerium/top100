@@ -109,7 +109,7 @@ class CandidateController extends Controller
                 $sheet->fromArray($data);
                 $sheet->setAutoSize(true);
             });
-        })->export('xlsx');
+        })->export('xls');
     }
     public function edit($id)
     {

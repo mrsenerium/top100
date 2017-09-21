@@ -71,7 +71,7 @@ class ApplicationController extends Controller
                     'name'                  => $activity['name'],
                     'description'           => $activity['description'],
                     'position_held'         => $activity['position_held'],
-                    'involvement_length'    => $activity['involvement'],
+                    'involvement_length'    => trim($activity['involvement'], " "),
                     'involvement_duration'  => $activity['duration'],
                     'organization_type'     => 'activity'
                 ]);
@@ -123,7 +123,7 @@ class ApplicationController extends Controller
                     'name'                  => $service['name'],
                     'description'           => $service['description'],
                     'position_held'         => $service['position_held'],
-                    'involvement_length'    => $service['involvement'],
+                    'involvement_length'    => trim($service['involvement'], " "),
                     'involvement_duration'  => $service['duration'],
                     'organization_type'     => 'service'
                 ]);

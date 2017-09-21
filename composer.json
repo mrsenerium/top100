@@ -13,7 +13,8 @@
         "arcanedev/log-viewer": "~3.0",
         "anlutro/l4-settings": "^0.4.8",
         "mews/purifier": "^2.0",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "Maatwebsite/excel": "^2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

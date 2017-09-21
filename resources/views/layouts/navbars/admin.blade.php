@@ -11,7 +11,8 @@
         <i class="fa fa-calculator"></i> Results
     </div>
     <a href="{{route('results::top100')}}" class="{{Route::currentRouteName() == 'results::top100' ? 'active' : ''}} list-group-item">Top 100 Results</a>
-    <a href="{{route('results::round2')}}" class="{{Route::currentRouteName() == 'results::round2' ? 'active' : ''}} list-group-item">Round 2 Results</a>
+    <a href="{{route('results::round2')}}" class="{{Route::currentRouteName() == 'results::round2' ? 'active' : ''}} list-group-item">Round 2 by Judge</a>
+    <a href="{{route('results::round2totals')}}" class="{{Route::currentRoutName() == 'results::round2totals' ? 'active' : ''}} list-group-item">Round 2 Totals</a>
 
     <div class="list-group-item list-group-item-info">
         <i class="fa fa-group"></i> Users
@@ -50,7 +51,10 @@
         <a href="{{route('results::top100')}}">Top 100 Results</a>
     </li>
     <li class="{{Route::currentRouteName() == 'results::round2' ? 'active' : ''}}">
-        <a href="{{route('results::round2')}}">Round 2 Results</a>
+        <a href="{{route('results::round2')}}">Round 2 by Judge</a>
+    </li>
+    <li class="{{Route::currentRouteName() == 'results::round2totals' ? 'active' : ''}}">
+        <a href="{{route('results::round2totals')}}">Round 2 Totals</a>
     </li>
   </ul>
 </li>

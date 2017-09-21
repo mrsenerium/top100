@@ -9,7 +9,6 @@
         {!! csrf_field() !!}
         <p>Results are not automatically calculated or updated. To refresh the results, press the Calculate button.</p>
         <button type="submit" class="btn btn-sm btn-info spinner" name="round" value="2">Calculate Round 2 Results</button>
-        <a href="{{route('results::export')}}" class="btn btn-sm btn-warning"><i class="fa fa-download"></i> Export</a>
     </form>
         <div class="table-responsive">
           <h2>Scores By Judge</h2>
@@ -18,17 +17,15 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Judge</th>
                         <th>Score</th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach($results as $key => $value)
                     <tr>
-                      <td>{{$value->candidate_id}}</td>
-                      <td>{{$value->candidate->fullname}}</td>
-                      <td>{{$value->judge->firstname}} {{$value->judge->lastname}}</td>
-                      <td>{{$value->total()}}</td>
+                      <td>{{$value->id}}</td>
+                      <td>{{$value->fullname}}</td>
+                      <td>{{$value->round2_score}}</td>
                     </tr>
                 @endforeach
                 </tbody>

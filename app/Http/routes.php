@@ -89,6 +89,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('results/top-100', ['as' => 'top100', 'uses' => 'ResultsController@showTop100']);
         Route::get('results/round-2', ['as' => 'round2', 'uses' => 'ResultsController@showRound2']);
         Route::post('results', ['as' => 'calculate', 'uses' => 'ResultsController@calculate']);
+        Route::get('results/round2totals', ['as' => 'round2totals', 'uses' => 'ResultsController@showRound2Totals']);
+        Route::get('results/export', ['as' => 'export', 'uses' => 'ResultsController@export']);
     });
     Route::group(['as' => 'recommendations::'], function () {
         Route::get('recommendations', ['as' => 'index', 'uses' => 'RecommendationController@index']);

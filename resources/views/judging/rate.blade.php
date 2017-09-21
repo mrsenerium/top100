@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Round 1 Judging
+    Round 1 Judging For Applicant {{$candidate->id}}
 @endsection
 
 @section('content')

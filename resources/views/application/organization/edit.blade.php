@@ -37,10 +37,10 @@
             <div class="form-group col-lg-3 col-md-4 col-sm-6 {{$errors->has($org_type.'.'.$key.'.involvement') ? 'has-error' : ''}}">
                 <label for="{{$org_type}}[{{$key}}][involvement]">Length of involvement</label>
                 <input type="text" id="{{$org_type}}[{{$key}}][involvement]" name="{{$org_type}}[{{$key}}][involvement]" class="form-control"
-                        value="{{old($org_type.'.'.$key.'.involvement', isset($organization) ? $organization->involvement_length : '')}}" />
-                @if($errors->has($org_type.'.'.$key.'.involvement'))
+                        value="{{old($org_type.'.'.$key.'.trim(involvement, " ")', isset($organization) ? $organization->involvement_length : '')}}" />
+                @if($errors->has($org_type.'.'.$key.'.trim(involvement, " ")'))
                   <div class="help-block">
-                    {{$errors->first($org_type.'.'.$key.'.involvement')}}
+                    {{$errors->first($org_type.'.'.$key.'.trim(involvement, " ")')}}
                   </div>
                 @endif
             </div>
