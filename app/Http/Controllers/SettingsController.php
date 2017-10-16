@@ -35,7 +35,7 @@ class SettingsController extends Controller
     {
         $this->authorize('access-admin');
         $this->validate($request, [
-            'reflection_question'   => 'required|max:255',
+            'reflection_question'   => 'required|max:1000',
             'current_state'         => 'required',
             'separate_genders'      => 'required|boolean',
             'organization_max'      => 'required|integer|min:0'
